@@ -55,10 +55,10 @@
 
     <div class="card" id="startScreen">
       <h1>Test — wersja szkoleniowa</h1>
-      <p class="sub">Pytania ABCD • jedna poprawna • po odpowiedzi pokazuje poprawną oraz wyjaśnienie.</p>
+      <p class="sub">ABCD • jedna poprawna • po odpowiedzi pokazuje poprawną i wyjaśnienie • BEZ auto-przejścia.</p>
       <div class="row">
         <button class="btn" id="startBtn">START</button>
-        <button class="btn secondary" id="shuffleBtn" title="Losuje kolejność pytań">Losuj kolejność</button>
+        <button class="btn secondary" id="shuffleBtn" title="Losuje kolejność pytań">Losuj pytania</button>
       </div>
       <div class="foot">
         <div>Tryb: <span class="score">szkoleniowy</span></div>
@@ -92,403 +92,172 @@
   </div>
 
 <script>
-/* ========= DANE: PYTANIA (REALNE Z PDF) ========= */
+/* ========= DANE: PYTANIA ========= */
 const QUESTIONS = [];
 function addQ(q,a,c,e){ QUESTIONS.push({q,a,c,e}); }
 
-/* --- Pytania 1–34 (na podstawie treści sprawdzian.pdf) --- */
+/* --- Pytania 1–34 (z Twojego PDF) --- */
+addQ("Rodzaje czynności ratowniczych: czynności „podstawowe” to…",
+["czynności wykonywane w poszczególnych dziedzinach ratownictwa przez wszystkich ratowników","czynności wykonywane wyłącznie przez SGR","czynności tylko dla PSP","czynności tylko w strefie skażenia"],0,
+"Podstawowe wykonują wszyscy ratownicy (wg definicji w materiale).");
 
-addQ(
-  "Rodzaje czynności ratowniczych wg §2 (KSRG): czynności „podstawowe” to…",
-  [
-    "czynności wykonywane w poszczególnych dziedzinach ratownictwa przez wszystkich ratowników",
-    "czynności wykonywane wyłącznie przez SGR z użyciem sprzętu specjalistycznego",
-    "czynności wykonywane tylko przez PSP (bez OSP)",
-    "czynności realizowane tylko w strefie skażenia"
-  ],
-  0,
-  "W PDF jest definicja: podstawowe wykonują wszyscy ratownicy (w różnych dziedzinach ratownictwa)."
-);
+addQ("Czynności „specjalistyczne” to…",
+["czynności wykonywane z użyciem sprzętu specjalistycznego przez odpowiednio przeszkolonych ratowników","czynności bez sprzętu i szkoleń","tylko działania gaśnicze","tylko strefa II"],0,
+"Specjalistyczne = sprzęt specjalistyczny + przeszkoleni ratownicy.");
 
-addQ(
-  "Czynności „specjalistyczne” wg §2 to…",
-  [
-    "czynności wykonywane z użyciem sprzętu specjalistycznego przez odpowiednio przeszkolonych ratowników",
-    "czynności wykonywane bez sprzętu i bez szkoleń",
-    "czynności wykonywane tylko w działaniach gaśniczych",
-    "czynności wykonywane wyłącznie w strefie II"
-  ],
-  0,
-  "Definicja z PDF: specjalistyczne = sprzęt specjalistyczny + ratownicy odpowiednio przeszkoleni."
-);
+addQ("Ratownictwo chemiczne to…",
+["zespół czynności w celu ratowania życia/zdrowia i środowiska podczas likwidacji zagrożeń od substancji niebezpiecznych",
+"gaszenie pożarów materiałów stałych","działania tylko biologiczne","tylko ewakuacja"],0,
+"Definicja z PDF: ratowanie ludzi i środowiska przy zagrożeniach od substancji niebezpiecznych.");
 
-addQ(
-  "Ratownictwo chemiczne (wg prezentacji) jest to…",
-  [
-    "zespół czynności podjętych w celu ratowania życia i zdrowia ludzi oraz środowiska podczas likwidacji bezpośrednich zagrożeń stwarzanych przez substancje niebezpieczne",
-    "gaszenie pożarów materiałów stałych",
-    "działania dotyczące wyłącznie skażeń biologicznych",
-    "tylko ewakuacja ludności z miejsca zdarzenia"
-  ],
-  0,
-  "Wprost z PDF: ratownictwo chemiczne = zespół czynności dla ratowania ludzi i środowiska przy zagrożeniach od substancji niebezpiecznych."
-);
+addQ("Ratownictwo ekologiczne to…",
+["zespół czynności w celu ratowania środowiska poprzez ograniczanie/likwidację skażeń z użyciem zabezpieczeń lub neutralizacji",
+"tylko gaszenie","tylko rozpoznanie","tylko transport poszkodowanych"],0,
+"Definicja z PDF: ograniczanie/likwidacja skażeń z zabezpieczeniami/neutralizacją.");
 
-addQ(
-  "Ratownictwo ekologiczne (wg prezentacji) to…",
-  [
-    "zespół czynności podjętych w celu ratowania środowiska poprzez ograniczanie lub likwidację skażeń z zastosowaniem skutecznych zabezpieczeń lub środków neutralizujących",
-    "działania wyłącznie gaśnicze",
-    "czynności ograniczone do rozpoznania",
-    "tylko transport skażonych osób"
-  ],
-  0,
-  "Definicja z PDF: ratownictwo ekologiczne = ograniczanie/likwidacja skażeń z użyciem zabezpieczeń lub neutralizacji."
-);
+addQ("Ratownictwo radiacyjne w materiale to…",
+["część RChE związana z likwidacją zagrożeń promieniowaniem i skażeniem promieniotwórczym","oddzielna dziedzina niezwiązana z RChE",
+"tylko działania medyczne","tylko rozpoznanie pożarowe"],0,
+"W PDF: radiacyjne jest częścią ratownictwa chemiczno-ekologicznego.");
 
-addQ(
-  "Ratownictwo radiacyjne w prezentacji jest opisane jako…",
-  [
-    "część ratownictwa chemiczno-ekologicznego, związana z likwidacją zagrożeń promieniowaniem i promieniotwórczym skażeniem środowiska",
-    "oddzielna dziedzina niezwiązana z chemiczno-ekologicznym",
-    "działania wyłącznie medyczne",
-    "tylko rozpoznanie pożarowe"
-  ],
-  0,
-  "W PDF: ratownictwo radiacyjne jest częścią ratownictwa chemiczno-ekologicznego (promieniowanie + skażenie promieniotwórcze)."
-);
+addQ("Zastęp ratowniczo-gaśniczy (PDF) to min.…",
+["6 ratowników/strażaków","4 ratowników/strażaków","8 ratowników/strażaków","12 ratowników/strażaków"],0,
+"W materiale: zastęp = min. 6 osób (obsada pojazdu).");
 
-addQ(
-  "W KSRG podział ratownictwa chemiczno-ekologicznego (RChE) ze względu na sprzęt i wyszkolenie obejmuje m.in.…",
-  [
-    "zakres podstawowy oraz zakres specjalistyczny",
-    "wyłącznie zakres specjalistyczny",
-    "wyłącznie zakres podstawowy",
-    "podział tylko na strefy I i II"
-  ],
-  0,
-  "W PDF jest podział: zakres podstawowy oraz zakres specjalistyczny."
-);
+addQ("W zastępie co najmniej … osoby mają kwalifikacje ze szkolenia kwalifikacyjnego.",
+["2","1","3","4"],0,
+"W materiale: w zastępie min. 2 osoby z kwalifikacjami.");
 
-addQ(
-  "Zakres podstawowy RChE obejmuje czynności wykonywane przez…",
-  [
-    "wszystkie JRG PSP oraz inne jednostki/podmioty deklarujące zdolność realizacji zadań wg możliwości i wyszkolenia",
-    "tylko specjalistyczne grupy ratownictwa",
-    "wyłącznie jednostki spoza PSP",
-    "tylko ratowników z poziomu A"
-  ],
-  0,
-  "W PDF: podstawowy = czynności wszystkich JRG PSP + inne podmioty wg gotowości i możliwości."
-);
+addQ("Sekcja ratowniczo-gaśnicza (PDF) to minimum…",
+["dwa zastępy","trzy zastępy","jeden zastęp","cztery zastępy"],0,
+"W materiale: sekcja = minimum 2 zastępy.");
 
-addQ(
-  "Zakres specjalistyczny RChE (wg PDF) dzieli ratownictwo chemiczne i ekologiczne specjalistyczne na…",
-  [
-    "dwa podzakresy (m.in. działań chemicznych oraz czynności rozpoznawcze w części ekologicznej)",
-    "trzy strefy działań (I/II/III)",
-    "cztery klasy ADR",
-    "dwa rodzaje dekontaminacji (wstępna i końcowa) jako podzakresy"
-  ],
-  0,
-  "W prezentacji: specjalistyczny jest podzielony na dwa podzakresy (w tym podzakres działań chemicznych realizowany przez SGR CHEM-EKO)."
-);
+addQ("Sekcja ratowniczo-gaśnicza liczy do…",
+["12 wyszkolonych ratowników","10 wyszkolonych ratowników","8 wyszkolonych ratowników","6 wyszkolonych ratowników"],0,
+"W materiale: do 12 ratowników (z dowódcą).");
 
-addQ(
-  "SGR CHEM-EKO to…",
-  [
-    "specjalistyczna grupa ratowników z przeszkoleniem chemiczno-ekologicznym oraz pojazdami i sprzętem ratownictwa chemicznego/technicznego/gaśniczego",
-    "dowolny zastęp w JRG",
-    "sekcja ratowniczo-gaśnicza bez sprzętu chemicznego",
-    "wyłącznie zespół do dekontaminacji końcowej"
-  ],
-  0,
-  "Definicja z PDF: SGR CHEM-EKO = przeszkoleni ratownicy + pojazdy i sprzęt do zadań chemiczno-ekologicznych."
-);
+addQ("Strefa I (PDF) to…",
+["strefa zagrożenia / działań ratowniczych (w tym ewakuacji)","strefa wolna od skażenia","strefa logistyczna","obszar tylko dla medyków"],0,
+"W materiale: strefa I = strefa zagrożenia i działań ratowniczych.");
 
-addQ(
-  "„Zastęp ratowniczo-gaśniczy” wg prezentacji to najmniejsza jednostka taktyczna złożona z co najmniej…",
-  [
-    "6 ratowników/strażaków",
-    "4 ratowników/strażaków",
-    "8 ratowników/strażaków",
-    "12 ratowników/strażaków"
-  ],
-  0,
-  "W PDF: zastęp = min. 6 ratowników/strażaków (obsada pojazdu bojowego)."
-);
+addQ("Kto może przebywać w strefie I?",
+["ratownicy z odpowiednimi ŚOI adekwatnymi do zagrożenia","każdy ratownik","osoby postronne po zgodzie","tylko KDR"],0,
+"W materiale: tylko ratownicy wyposażeni w odpowiednie środki ochrony.");
 
-addQ(
-  "W definicji zastępu (PDF) wskazano również, że co najmniej … osoby mają kwalifikacje ze szkolenia kwalifikacyjnego.",
-  [
-    "2",
-    "1",
-    "3",
-    "4"
-  ],
-  0,
-  "W PDF: w zastępie co najmniej 2 osoby z kwalifikacjami ze szkolenia kwalifikacyjnego."
-);
+addQ("Obszar dekontaminacji D (PDF) to…",
+["obszar dekontaminacji wstępnej poza strefą I, możliwe wtórne skażenie mniejsze niż pierwotne","strefa bezpieczna","obszar tylko dla KDR","magazyn sprzętu czystego"],0,
+"Materiał: D = dekontaminacja wstępna + możliwe skażenie wtórne.");
 
-addQ(
-  "„Sekcja ratowniczo-gaśnicza” wg PDF to najmniejszy pododdział taktyczny złożony z minimum…",
-  [
-    "dwóch zastępów",
-    "trzech zastępów",
-    "jednego zastępu",
-    "czterech zastępów"
-  ],
-  0,
-  "W PDF: sekcja = minimum dwa zastępy."
-);
+addQ("Strefa II (PDF) jest opisana jako…",
+["obszar wolny od skażenia (praca służb + logistyka) poza strefą I i D","strefa bezpośredniego zagrożenia","obszar o większym skażeniu wtórnym","strefa tylko ewakuacji"],0,
+"W materiale: strefa II = obszar wolny od skażenia, z logistyką.");
 
-addQ(
-  "Sekcja ratowniczo-gaśnicza wg PDF liczy do…",
-  [
-    "12 wyszkolonych ratowników",
-    "10 wyszkolonych ratowników",
-    "8 wyszkolonych ratowników",
-    "6 wyszkolonych ratowników"
-  ],
-  0,
-  "W PDF: sekcja liczy do 12 wyszkolonych ratowników (w tym dowódca)."
-);
+addQ("TR (toxic release) dzieli się na…",
+["TRI (krótkotrwałe) oraz TRC (ciągłe)","TRL i TRH","TRS i TRZ","tylko TRC"],0,
+"W materiale: TRI = krótkotrwałe, TRC = ciągłe.");
 
-addQ(
-  "Podział terenu akcji (chemiczno-ekologicznej) obejmuje m.in. strefę I jako…",
-  [
-    "strefę zagrożenia (strefę działań ratowniczych, w tym ewakuacji)",
-    "strefę wolną od skażenia",
-    "strefę wyłącznie logistyczną",
-    "obszar wyłącznie dla medyków"
-  ],
-  0,
-  "W PDF: strefa I = strefa zagrożenia i działań ratowniczych (w tym ewakuacja)."
-);
+addQ("Dyfuzja to…",
+["wyrównywanie stężeń wskutek bezładnego ruchu (prawo Ficka)","poziomy transport z wiatrem","wiązanie skażeń","rozkład biologiczny"],0,
+"W materiale: dyfuzja = wyrównywanie stężeń (prawo Ficka).");
 
-addQ(
-  "Kto ma prawo przebywać w strefie I wg PDF?",
-  [
-    "wyłącznie ratownicy wyposażeni w odpowiedni do sytuacji sprzęt ochrony osobistej",
-    "każdy ratownik bez względu na wyposażenie",
-    "osoby postronne po zgodzie KDR",
-    "tylko dowódca akcji"
-  ],
-  0,
-  "Wprost z PDF: w strefie I przebywają tylko ratownicy z odpowiednim ŚOI."
-);
+addQ("Adwekcja to…",
+["poziome ruchy powietrza przenoszące skażenia","wyrównywanie stężeń","wiązanie skażeń","rozkład skażeń"],0,
+"W materiale: adwekcja = poziomy transport skażeń ruchem powietrza.");
 
-addQ(
-  "Obszar dekontaminacji „D” w PDF to…",
-  [
-    "obszar dekontaminacji wstępnej poza strefą I, gdzie może wystąpić wtórne skażenie mniejsze niż pierwotne",
-    "strefa wolna od skażenia",
-    "obszar tylko dla KDR",
-    "miejsce składowania sprzętu czystego"
-  ],
-  0,
-  "W PDF: D = dekontaminacja wstępna poza strefą I + możliwe wtórne skażenie."
-);
+addQ("Sorpcja to…",
+["pochłanianie skażeń w wyniku ich wiązania","rozpraszanie skażeń","poziomy transport","wyrównywanie stężeń"],0,
+"Sorpcja = wiązanie/pochłanianie skażeń (wg materiału).");
 
-addQ(
-  "Strefa II wg PDF jest opisana jako…",
-  [
-    "wolny od skażenia obszar pracy służb, poza strefą I i obszarem dekontaminacji, wraz z obszarem zabezpieczenia logistycznego",
-    "strefa bezpośredniego zagrożenia",
-    "obszar wtórnego skażenia o większym natężeniu niż pierwotne",
-    "wyłącznie strefa ewakuacji"
-  ],
-  0,
-  "W PDF: strefa II = obszar wolny od skażenia (praca służb + logistyka), poza I i D."
-);
+addQ("Dyspersja to…",
+["rozpraszanie skażeń w ośrodku","wiązanie skażeń","poziomy transport","rozkład biologiczny"],0,
+"W materiale: dyspersja = rozpraszanie w ośrodku.");
 
-addQ(
-  "Skażenie chemiczne TR (toxic release) w PDF dzieli się m.in. na…",
-  [
-    "krótkotrwałe (TRI) oraz ciągłe (TRC)",
-    "lekkie (TRL) oraz ciężkie (TRH)",
-    "stałe (TRS) oraz zmienne (TRZ)",
-    "tylko ciągłe (TRC)"
-  ],
-  0,
-  "W PDF: TR może być krótkotrwałe (instantly) TRI lub ciągłe (constantly) TRC."
-);
+addQ("Degradacja to…",
+["rozkład skażeń w procesach chemicznych i biologicznych","rozpraszanie","wiązanie","poziomy transport"],0,
+"W materiale: degradacja = rozkład chem./bio.");
 
-addQ(
-  "Dyfuzja (proces migracji/rozkładu zanieczyszczeń) to…",
-  [
-    "wyrównywanie stężeń wskutek bezładnego ruchu i tworzenie jednorodnej mieszaniny (prawo Ficka)",
-    "poziome ruchy powietrza przenoszące skażenia",
-    "rozpraszanie skażeń w ośrodku",
-    "rozkład skażeń w procesach chemicznych i biologicznych"
-  ],
-  0,
-  "Definicja z PDF: dyfuzja = wyrównywanie stężeń (prawo Ficka)."
-);
+addQ("DGW/LEL to…",
+["najniższe stężenie palne w powietrzu zdolne do zapłonu/wybuchu","najwyższe stężenie palne","temperatura zapłonu","miara promieniowania"],0,
+"LEL/DGW = dolna granica wybuchowości.");
 
-addQ(
-  "Adwekcja (wg PDF) to…",
-  [
-    "poziome ruchy powietrza przenoszące skażenia wzdłuż linii prądu",
-    "wyrównywanie stężeń wskutek bezładnego ruchu",
-    "pochłanianie skażeń przez wiązanie",
-    "rozkład skażeń w procesach biologicznych"
-  ],
-  0,
-  "Definicja z PDF: adwekcja = poziomy transport skażeń ruchem powietrza."
-);
+addQ("GGW/UEL to…",
+["najwyższe stężenie palne w powietrzu, przy którym wybuch jest jeszcze możliwy","najniższe stężenie palne","temperatura samozapalenia","wartość LD50"],0,
+"UEL/GGW = górna granica wybuchowości.");
 
-addQ(
-  "Sorpcja (wg PDF) oznacza…",
-  [
-    "pochłanianie skażeń w wyniku ich związywania",
-    "rozpraszanie skażeń w ośrodku",
-    "poziomy transport skażeń",
-    "chemiczny rozkład skażeń"
-  ],
-  0,
-  "W PDF: sorpcja = pochłanianie skażeń przez ich wiązanie."
-);
+addQ("Temperatura zapłonu to…",
+["najniższa temperatura, gdy ciecz wydziela tyle par, że mogą zapalić się od bodźca termicznego","temperatura samozapalenia","temperatura wrzenia","temperatura topnienia"],0,
+"Z materiału: min. temp. zapłonu par od bodźca (iskra/płomień).");
 
-addQ(
-  "Dyspersja (wg PDF) to…",
-  [
-    "rozpraszanie skażeń w danym ośrodku",
-    "pochłanianie skażeń przez wiązanie",
-    "poziome ruchy powietrza",
-    "wyrównywanie stężeń (prawo Ficka)"
-  ],
-  0,
-  "W PDF: dyspersja = rozpraszanie skażeń w ośrodku."
-);
+addQ("Samozapalenie to proces, w którym…",
+["wydziela się ciepło aż do samorzutnego zapalenia (bez otwartego ognia)","zawsze potrzebny jest płomień","zawsze zachodzi detonacja","dochodzi tylko do dyfuzji"],0,
+"W materiale: wydzielanie ciepła aż do samorzutnego zapłonu.");
 
-addQ(
-  "Degradacja (wg PDF) to…",
-  [
-    "rozkład skażeń w procesach chemicznych i biologicznych",
-    "rozpraszanie skażeń w ośrodku",
-    "pochłanianie skażeń przez wiązanie",
-    "poziome ruchy powietrza"
-  ],
-  0,
-  "W PDF: degradacja = rozkład skażeń w procesach chemicznych i biologicznych."
-);
+addQ("Temperatura samozapalenia to…",
+["najniższa temperatura, przy której zachodzi samozapalenie","temperatura zapłonu","górna granica wybuchowości","temperatura krzepnięcia"],0,
+"W materiale: minimalna temp. dla samozapalenia.");
 
-addQ(
-  "Dolna granica wybuchowości (DGW/LEL) wg PDF to…",
-  [
-    "najniższe stężenie substancji palnej w mieszaninie z powietrzem, przy którym może nastąpić zapalenie/wybuch pod bodźcem termicznym",
-    "najwyższe stężenie substancji palnej, przy którym jeszcze może nastąpić wybuch",
-    "temperatura, przy której ciecz wydziela pary zdolne do zapłonu",
-    "miara promieniowania jonizującego w powietrzu"
-  ],
-  0,
-  "DGW/LEL = minimalne stężenie palnej substancji w powietrzu, przy którym możliwy jest zapłon/wybuch."
-);
+addQ("„Dawka” w toksykologii to…",
+["ilość substancji wchłoniętej do organizmu","czas ekspozycji","stężenie w powietrzu","miara dyfuzji"],0,
+"W materiale: dawka = ilość wchłoniętej substancji.");
 
-addQ(
-  "Górna granica wybuchowości (GGW/UEL) oznacza…",
-  [
-    "najwyższe stężenie substancji palnej w mieszaninie z powietrzem, przy którym może jeszcze nastąpić wybuch",
-    "najniższe stężenie substancji palnej, przy którym może już nastąpić zapalenie",
-    "dolną granicę toksyczności",
-    "temperaturę samozapalenia"
-  ],
-  0,
-  "GGW/UEL = najwyższe stężenie palnej substancji, przy którym wybuch jest jeszcze możliwy."
-);
+addQ("BLEVE to…",
+["wybuchowe uwolnienie ekspandującej pary oraz wrzącej cieczy","wybuch niezwiązanej chmury par (UVCE)","pożar powierzchniowy","skażenie radiacyjne"],0,
+"W materiale: BLEVE = ekspandująca para + wrząca ciecz.");
 
-addQ(
-  "Temperatura zapłonu cieczy wg PDF to…",
-  [
-    "najniższa temperatura, przy której ciecz wydziela tyle par, że powstaje mieszanina zdolna zapalić się od bodźca termicznego",
-    "temperatura, przy której następuje samorzutny zapłon bez bodźca zewnętrznego",
-    "temperatura wrzenia cieczy",
-    "temperatura topnienia cieczy"
-  ],
-  0,
-  "Temperatura zapłonu = minimalna temp., gdy pary nad cieczą mogą zapalić się od iskry/płomienia."
-);
+addQ("UVCE to…",
+["wybuch niezwiązanej chmury par w powietrzu","BLEVE","TRC","NDSCh"],0,
+"W materiale: UVCE = wybuch chmury par.");
 
-addQ(
-  "Samozapalenie (wg PDF) to proces, podczas którego…",
-  [
-    "wydziela się ciepło aż do samorzutnego zapalenia się (bez otwartego źródła ognia)",
-    "ciecz osiąga temperaturę wrzenia",
-    "dochodzi wyłącznie do dyfuzji par",
-    "występuje tylko po podaniu płomienia"
-  ],
-  0,
-  "W PDF: samozapalenie to wydzielanie ciepła aż do samorzutnego zapłonu."
-);
+addQ("LD50 to…",
+["dawka (mg/kg) powodująca śmierć 50% zwierząt w 14 dni","stężenie (mg/m³) w powietrzu/wodzie","NDS","moc dawki"],0,
+"LD50 = dawka w mg/kg (wg materiału).");
 
-addQ(
-  "Temperatura samozapalenia (wg PDF) to…",
-  [
-    "najniższa temperatura, przy której następuje samozapalenie",
-    "najniższa temperatura, przy której ciecz wydziela palne pary (temperatura zapłonu)",
-    "górna granica wybuchowości",
-    "temperatura, przy której ciecz krzepnie"
-  ],
-  0,
-  "Temperatura samozapalenia = minimalna temp., przy której zachodzi samozapalenie."
-);
+addQ("LC50 to…",
+["stężenie (mg/m³) powodujące śmierć 50% zwierząt w 14 dni","dawka (mg/kg)","NDSP","LEL"],0,
+"LC50 = stężenie w mg/m³ (wg materiału).");
 
-addQ(
-  "W prezentacji „dawka” jest opisana jako…",
-  [
-    "ilość substancji wchłoniętej do żywego organizmu",
-    "czas oddziaływania substancji na organizm",
-    "stężenie substancji w powietrzu",
-    "miara dyfuzji w środowisku"
-  ],
-  0,
-  "W PDF: dawka = ilość substancji, która wchłonęła się do organizmu."
-);
+addQ("NDS (TWA) to stężenie, które…",
+["przy 8h/dobę przez wieloletni okres nie wywołuje objawów zatrucia","może być przekroczone zawsze","nie może być przekroczone nigdy (to NDSP)","dotyczy tylko promieniowania"],0,
+"W materiale: NDS = 8h/dzień, długotrwale bez skutków.");
 
-addQ(
-  "W toksykologii na wielkość skutku działania substancji wpływa wprost…",
-  [
-    "dawka oraz czas ekspozycji",
-    "wyłącznie wilgotność powietrza",
-    "wyłącznie kolor substancji",
-    "tylko pora dnia"
-  ],
-  0,
-  "Zależność opisywana w materiale: działanie zależy od dawki i czasu oddziaływania (ekspozycji)."
-);
+addQ("NDSCh (STEL) to…",
+["stężenie chwilowe dopuszczalne maks. 2×15 min na zmianę z przerwą ≥1h","stężenie 8-godzinne","stężenie pułapowe (NDSP)","dawka śmiertelna"],0,
+"W materiale: NDSCh = 2×15 min, odstęp min. 1h.");
 
-addQ(
-  "Który zestaw pojęć dotyczy procesów przemieszczania/zmian zanieczyszczeń w środowisku (wg PDF)?",
-  [
-    "dyfuzja, adwekcja, sorpcja, dyspersja, degradacja",
-    "DGW, GGW, LEL, UEL, NDS",
-    "BLEVE, UVCE, flashover, backdraft, rollover",
-    "SGR, JRG, KDR, KSRG, PAA"
-  ],
-  0,
-  "W PDF wprost: procesy migracji i rozkładu to m.in. dyfuzja, adwekcja, sorpcja, dyspersja, degradacja."
-);
+addQ("NDSP to…",
+["stężenie, którego nie wolno przekroczyć w żadnym momencie","stężenie 8-godzinne","stężenie 15-minutowe","wartość LC50"],0,
+"NDSP = pułapowe, nieprzekraczalne (wg materiału).");
 
-addQ(
-  "Które zdanie najlepiej oddaje sens DGW/LEL w praktyce ratowniczej?",
-  [
-    "poniżej DGW mieszanina jest zbyt „uboga” w paliwo, aby wybuchnąć",
-    "poniżej DGW zawsze dochodzi do wybuchu",
-    "DGW oznacza temperaturę zapłonu",
-    "DGW dotyczy wyłącznie substancji stałych"
-  ],
-  0,
-  "DGW/LEL wyznacza minimalne stężenie palnej substancji, przy którym zapłon/wybuch staje się możliwy."
-);
+addQ("Dawka ekspozycyjna X jest miarą…",
+["jonizacji w powietrzu pod wpływem promieniowania X lub γ","toksyczności w wodzie","zapalności par","dyfuzji"],0,
+"W materiale: dawka ekspozycyjna dotyczy jonizacji powietrza.");
 
-/* ========= LOGIKA QUIZU (ciąg dalszy w cz. 3/3) ========= */
-let order = [];      // kolejność pytań
-let idx = 0;         // indeks w kolejności
-let score = 0;       // liczba poprawnych
-let answered = 0;    // liczba udzielonych odpowiedzi
-let locked = false;  // blokada wielokrotnego kliku
-let userAns = [];    // zapamiętane odpowiedzi
+addQ("Wzór na dawkę ekspozycyjną to…",
+["X = Q / m","X = m / Q","X = Q · m","X = Q² / m"],0,
+"W materiale: X = Q/m.");
+
+addQ("Jednostka SI dawki ekspozycyjnej to…",
+["C/kg","R","mg/m³","µSv/h"],0,
+"W materiale: C/kg.");
+
+addQ("Zależność jednostek: 1 R = …",
+["2,58·10⁻⁴ C/kg","2,58·10⁻² C/kg","2,58·10⁻⁶ C/kg","2,58·10⁻⁸ C/kg"],0,
+"W materiale: 1 R = 2,58·10⁻⁴ C/kg.");
+
+/* ========= FIX 1: TASOWANIE ODPOWIEDZI (żeby poprawna nie była zawsze A) ========= */
+function shuffleAnswersKeepCorrect(q){
+  const pairs = q.a.map((txt,i)=>({txt,i}));
+  for(let i=pairs.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [pairs[i],pairs[j]]=[pairs[j],pairs[i]];
+  }
+  q.a = pairs.map(p=>p.txt);
+  q.c = pairs.findIndex(p=>p.i===q.c);
+}
+
+/* ========= LOGIKA QUIZU (BEZ AUTO-PRZEJŚCIA) ========= */
+let order = [], idx = 0, score = 0, answered = 0, locked = false;
+let userAns = [];
 
 const startScreen = document.getElementById('startScreen');
 const quizScreen  = document.getElementById('quizScreen');
@@ -514,12 +283,7 @@ const endLine     = document.getElementById('endLine');
 const restartBtn  = document.getElementById('restartBtn');
 const reviewBtn   = document.getElementById('reviewBtn');
 
-function shuffle(arr){
-  for(let i=arr.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [arr[i],arr[j]]=[arr[j],arr[i]];
-  }
-}
+function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } }
 
 function render(){
   locked = false;
@@ -533,8 +297,8 @@ function render(){
   bar.style.width = `${Math.round((idx/order.length)*100)}%`;
 
   qText.textContent = item.q;
-
   answersEl.innerHTML = "";
+
   item.a.forEach((t,i)=>{
     const b=document.createElement('button');
     b.className="opt";
@@ -588,22 +352,16 @@ function choose(chosen){
 
   reveal(chosen);
 
-  // auto-next (szkoleniowo)
-  setTimeout(()=>{
-    if(idx < order.length-1) next(true);
-  }, 650);
+  // FIX 2: brak auto-przejścia — czytasz wyjaśnienie i klikasz „Dalej” ręcznie
 }
 
 function next(fromAuto=false){
   const qi = order[idx];
   if(userAns[qi] === null){
-    if(!fromAuto) alert("Najpierw wybierz odpowiedź A/B/C/D.");
+    alert("Najpierw wybierz odpowiedź A/B/C/D.");
     return;
   }
-  if(idx === order.length-1){
-    finish();
-    return;
-  }
+  if(idx === order.length-1){ finish(); return; }
   idx++;
   render();
   window.scrollTo({top:0,behavior:'smooth'});
@@ -617,9 +375,9 @@ function prev(){
 }
 
 /* ====== WKLEJ CZĘŚĆ 2/3 PONIŻEJ (pytania 35–67) ====== */
-  /* ====== CZĘŚĆ 2/3 (pytania 35–67) — wklej pod częścią 1/3 ====== */
+  /* ====== CZĘŚĆ 2/3 — pytania 35–67 ====== */
 
-/* --- 35–44: TSR / temperatury dla nadtlenków organicznych --- */
+/* --- TSR / temperatury nadtlenków organicznych --- */
 
 addQ(
   "TSR (temperatura samoprzyspieszającego się rozkładu) to…",
@@ -630,7 +388,7 @@ addQ(
     "temperatura zapłonu cieczy palnej"
   ],
   0,
-  "W PDF: TSR = najniższa temperatura, przy której może rozpocząć się samorzutny rozkład nadtlenku w opakowaniu."
+  "TSR to próg, od którego rozkład może ruszyć samorzutnie w danym opakowaniu."
 );
 
 addQ(
@@ -638,23 +396,23 @@ addQ(
   [
     "najwyższa temperatura, przy której nadtlenek może być bezpiecznie przechowywany i transportowany",
     "najniższa temperatura rozpoczęcia rozkładu (TSR)",
-    "temperatura, przy której następuje wybuch BLEVE",
+    "temperatura, przy której zachodzi UVCE",
     "temperatura, przy której nie wolno prowadzić rozpoznania"
   ],
   0,
-  "W PDF: temperatura robocza = najwyższa temperatura bezpiecznego przechowywania i transportu."
+  "Temperatura robocza jest wyznaczana tak, aby nie dopuścić do niekontrolowanego rozkładu."
 );
 
 addQ(
   "Temperatura alarmowa (dla nadtlenków organicznych) to…",
   [
     "temperatura, przy której powinny rozpocząć się działania ratownicze, by nie dopuścić do osiągnięcia TSR",
-    "najwyższa temperatura przechowywania",
+    "najwyższa temperatura bezpiecznego przechowywania",
     "temperatura wrzenia cieczy",
     "temperatura zapłonu"
   ],
   0,
-  "W PDF: temperatura alarmowa uruchamia działania ratownicze, aby nie dopuścić do osiągnięcia TSR."
+  "Temperatura alarmowa uruchamia reakcję/ działania zanim osiągniesz TSR."
 );
 
 addQ(
@@ -666,7 +424,7 @@ addQ(
     "dokładnie 35°C"
   ],
   0,
-  "W PDF: grupa I = TSR poniżej 20°C."
+  "Grupa I ma najniższe TSR (najbardziej wrażliwe na temperaturę)."
 );
 
 addQ(
@@ -678,7 +436,7 @@ addQ(
     "od 35°C do 50°C"
   ],
   0,
-  "W PDF: grupa II = TSR 20–35°C."
+  "Grupa II: TSR w przedziale 20–35°C."
 );
 
 addQ(
@@ -690,7 +448,7 @@ addQ(
     "dokładnie 20°C"
   ],
   0,
-  "W PDF: grupa III = TSR powyżej 35°C."
+  "Grupa III ma najwyższe TSR."
 );
 
 addQ(
@@ -702,7 +460,7 @@ addQ(
     "5°C poniżej TSR"
   ],
   0,
-  "W PDF (tabela): grupa I → temperatura robocza = TSR − 20°C."
+  "Grupa I: robocza = TSR − 20°C."
 );
 
 addQ(
@@ -714,7 +472,7 @@ addQ(
     "5°C poniżej TSR"
   ],
   0,
-  "W PDF: grupa II → temperatura robocza = TSR − 15°C."
+  "Grupa II: robocza = TSR − 15°C."
 );
 
 addQ(
@@ -726,7 +484,7 @@ addQ(
     "5°C poniżej TSR"
   ],
   0,
-  "W PDF: grupa III → temperatura robocza = TSR − 10°C."
+  "Grupa III: robocza = TSR − 10°C."
 );
 
 addQ(
@@ -738,7 +496,7 @@ addQ(
     "20°C poniżej TSR"
   ],
   0,
-  "W PDF (tabela): grupa III → temperatura alarmowa = TSR − 5°C."
+  "Grupa III: alarmowa = TSR − 5°C."
 );
 
 addQ(
@@ -750,449 +508,75 @@ addQ(
     "20°C poniżej TSR"
   ],
   0,
-  "W PDF: grupa I → TSR−10°C, grupa II → TSR−10°C."
+  "Grupa I i II: alarmowa = TSR − 10°C."
 );
 
-/* --- 45–48: rodzaje zagrożeń / TR --- */
+/* --- TR / zdarzenia szczególne --- */
 
 addQ(
-  "BLEVE (wg PDF) to…",
-  [
-    "wybuchowe uwolnienie ekspandującej pary oraz wrzącej cieczy",
-    "wybuch niezwiązanej chmury par w powietrzu",
-    "pożar powierzchniowy",
-    "skażenie promieniotwórcze terenu"
-  ],
-  0,
-  "W PDF: BLEVE = wybuchowe uwolnienie ekspandującej pary i wrzącej cieczy."
-);
-
-addQ(
-  "Skażenie chemiczne TR (toxic release) oznacza…",
+  "TR (toxic release) oznacza…",
   [
     "toksyczne uwolnienie substancji",
     "wybuch zbiornika ciśnieniowego",
     "pożar strumieniowy",
-    "promieniowanie jonizujące"
-  ],
-  0,
-  "W PDF: TR = toxic release (toksyczne uwolnienie)."
-);
-
-addQ(
-  "TRI w prezentacji oznacza uwolnienie…",
-  [
-    "krótkotrwałe (instantly)",
-    "ciągłe (constantly)",
-    "wyłącznie w wodzie",
-    "wyłącznie w powietrzu"
-  ],
-  0,
-  "W PDF: TRI = krótkotrwałe (instantly)."
-);
-
-addQ(
-  "TRC w prezentacji oznacza uwolnienie…",
-  [
-    "ciągłe (constantly)",
-    "krótkotrwałe (instantly)",
-    "jednorazowe (single)",
-    "wyłącznie w glebie"
-  ],
-  0,
-  "W PDF: TRC = ciągłe (constantly)."
-);
-
-/* --- 49–53: LD50 / LC50 --- */
-
-addQ(
-  "LD50 (DL50) wg PDF to…",
-  [
-    "ilość substancji, która powoduje śmierć 50% zwierząt doświadczalnych (200–300 g) w ciągu 14 dni [mg/kg]",
-    "stężenie substancji w powietrzu powodujące śmierć 50% zwierząt [mg/m³]",
-    "najwyższe dopuszczalne stężenie w pracy",
-    "dawka ekspozycyjna promieniowania"
-  ],
-  0,
-  "W PDF: LD50 = dawka (mg/kg) powodująca śmierć połowy zwierząt w 14 dni."
-);
-
-addQ(
-  "LC50 (CL50) wg PDF to…",
-  [
-    "stężenie substancji w powietrzu lub wodzie powodujące śmierć 50% zwierząt (200–300 g) w ciągu 14 dni [mg/m³]",
-    "ilość substancji wchłoniętej do organizmu [mg/kg]",
-    "temperatura zapłonu cieczy",
-    "górna granica wybuchowości"
-  ],
-  0,
-  "W PDF: LC50 = stężenie (mg/m³) w powietrzu/wodzie prowadzące do śmierci 50% zwierząt w 14 dni."
-);
-
-addQ(
-  "Jednostka LD50 podana w PDF to…",
-  [
-    "mg/kg",
-    "mg/m³",
-    "C/kg",
-    "µSv/h"
-  ],
-  0,
-  "W PDF: LD50 wyrażane w mg/kg."
-);
-
-addQ(
-  "Jednostka LC50 podana w PDF to…",
-  [
-    "mg/m³",
-    "mg/kg",
-    "C/kg",
-    "R (rentgen)"
-  ],
-  0,
-  "W PDF: LC50 wyrażane w mg/m³."
-);
-
-/* --- 54–58: NDS / NDSCh / NDSP --- */
-
-addQ(
-  "NDS (TWA) wg PDF to stężenie, które…",
-  [
-    "przy stałym kontakcie przez 8 godzin dziennie przez wieloletni okres nie wywołuje objawów zatrucia",
-    "może być przekraczane 2×15 minut na zmianę",
-    "nie może być przekroczone w żadnym momencie",
-    "dotyczy wyłącznie ekspozycji promieniowania"
-  ],
-  0,
-  "W PDF: NDS (TWA) = bezpieczne przy 8h/dobę w długim okresie."
-);
-
-addQ(
-  "NDS (TWA) w PDF podawane jest w jednostce…",
-  [
-    "mg/m³",
-    "mg/kg",
-    "µSv/h",
-    "C/kg"
-  ],
-  0,
-  "W PDF: NDS podaje się w mg/m³."
-);
-
-addQ(
-  "NDSCh (STEL) wg PDF to stężenie średnie, które…",
-  [
-    "nie powinno powodować ujemnych zmian zdrowia (ani przyszłych pokoleń), jeśli utrzymuje się nie dłużej niż 2×15 min w zmianie, z odstępem ≥1h",
-    "nie może być przekroczone nigdy",
-    "jest uśrednione dla 8-godzinnego dnia pracy",
-    "dotyczy tylko substancji promieniotwórczych"
-  ],
-  0,
-  "W PDF: NDSCh = 2×15 min na zmianę, odstęp min. 1 godzina."
-);
-
-addQ(
-  "NDSP wg PDF to stężenie, które…",
-  [
-    "nie może być przekroczone w środowisku pracy ze względu na zagrożenie zdrowia lub życia",
-    "może być przekroczone 2×15 min",
-    "jest bezpieczne przy 8h/dzień",
-    "dotyczy wyłącznie pyłów"
-  ],
-  0,
-  "W PDF: NDSP = pułapowe, nieprzekraczalne (zagrożenie zdrowia/życia)."
-);
-
-addQ(
-  "Które pojęcie z PDF odpowiada „pułapowemu” stężeniu nieprzekraczalnemu?",
-  [
-    "NDSP",
-    "NDSCh",
-    "NDS (TWA)",
-    "LD50"
-  ],
-  0,
-  "W PDF: „Najwyższe dopuszczalne stężenie progowe (pułapowe)” = NDSP."
-);
-
-/* --- 59–63: promieniowanie / dawka ekspozycyjna / strefy --- */
-
-addQ(
-  "Dawka ekspozycyjna (X) wg PDF jest miarą…",
-  [
-    "jonizacji zachodzącej w powietrzu pod wpływem promieniowania X lub γ",
-    "toksyczności substancji w wodzie",
-    "zapalności par cieczy",
-    "dyfuzji skażeń w środowisku"
-  ],
-  0,
-  "W PDF: dawka ekspozycyjna mierzy jonizację w powietrzu od promieniowania X lub γ."
-);
-
-addQ(
-  "Wzór na dawkę ekspozycyjną z PDF to…",
-  [
-    "X = Q / m",
-    "X = m / Q",
-    "X = Q · m",
-    "X = Q² / m"
-  ],
-  0,
-  "W PDF: X = Q/m (ładunek jonów jednego znaku / masa powietrza)."
-);
-
-addQ(
-  "Jednostką dawki ekspozycyjnej w SI (wg PDF) jest…",
-  [
-    "C/kg",
-    "R",
-    "mg/m³",
-    "µSv/h"
-  ],
-  0,
-  "W PDF: jednostka SI dawki ekspozycyjnej to kulomb na kilogram (C/kg)."
-);
-
-addQ(
-  "W PDF podano zależność jednostek: 1 R = …",
-  [
-    "2,58·10⁻⁴ C/kg",
-    "2,58·10⁻² C/kg",
-    "2,58·10⁻⁶ C/kg",
-    "2,58·10⁻⁸ C/kg"
-  ],
-  0,
-  "W PDF: 1 R = 2,58·10⁻⁴ C/kg."
-);
-
-addQ(
-  "W pomiarach radiacyjnych (PDF) wyróżnia się m.in. strefę kontrolowaną jako…",
-  [
-    "teren o kontrolowanym dostępie i specjalnych przepisach ochrony przed promieniowaniem / skażeniami",
-    "teren bez ograniczeń, wolny od przepisów",
-    "obszar wyłącznie dekontaminacji",
-    "strefę wyłącznie ewakuacji"
-  ],
-  0,
-  "W PDF: strefa kontrolowana ma kontrolowany dostęp i szczególne przepisy ochronne."
-);
-
-/* --- 64–67: granice wybuchowości + prawo odwrotności kwadratu --- */
-
-addQ(
-  "DGW/LEL wg PDF to…",
-  [
-    "najniższe stężenie substancji palnej w powietrzu, przy którym może nastąpić zapalenie/wybuch pod wpływem bodźca termicznego",
-    "najwyższe stężenie substancji palnej, przy którym wybuch jest możliwy",
-    "temperatura samozapalenia",
-    "stężenie pułapowe NDSP"
-  ],
-  0,
-  "W PDF: DGW/LEL = dolna granica wybuchowości (minimalne stężenie palne)."
-);
-
-addQ(
-  "GGW/UEL wg PDF to…",
-  [
-    "najwyższe stężenie substancji palnej w powietrzu, przy którym może jeszcze nastąpić wybuch pod wpływem bodźca termicznego",
-    "najniższe stężenie substancji palnej, przy którym może nastąpić wybuch",
-    "temperatura zapłonu",
-    "wartość LD50"
-  ],
-  0,
-  "W PDF: GGW/UEL = górna granica wybuchowości (maksymalne stężenie palne)."
-);
-
-addQ(
-  "W zadaniu radiacyjnym z PDF: jeśli moc dawki w odległości 1 m wynosi 400 µSv/h, to w odległości 20 m (prawo odwrotności kwadratu) wynosi…",
-  [
-    "1 µSv/h",
-    "20 µSv/h",
-    "400 µSv/h",
-    "8000 µSv/h"
-  ],
-  0,
-  "W PDF: moc dawki maleje ~ 1/r². 400*(1²/20²)=400/400=1 µSv/h."
-);
-
-addQ(
-  "W zadaniu radiacyjnym z PDF przyjęto zasadę, że moc dawki maleje proporcjonalnie do…",
-  [
-    "kwadratu odległości (1/r²)",
-    "odległości (1/r)",
-    "sześcianu odległości (1/r³)",
-    "pierwiastka z odległości"
-  ],
-  0,
-  "W PDF: „moc dawki maleje proporcjonalnie do kwadratu odległości od źródła” (prawo 1/r²)."
-);
-
-/* ====== KONIEC CZĘŚCI 2/3 ====== */
-/* ====== WKLEJ CZĘŚĆ 3/3 PONIŻEJ (pytania 68–100 + start i obsługa przycisków) ====== */
- /* ====== CZĘŚĆ 3/3 (pytania 68–100 + zamknięcie logiki i HTML) ====== */
-
-/* --- 68–75: UVCE / strefy / dekontaminacja i logistyka (wg PDF) --- */
-
-addQ(
-  "UVCE wg PDF oznacza…",
-  [
-    "wybuch niezwiązanej chmury par (cieczy palnej) w powietrzu",
-    "wybuch zbiornika z cieczą pod ciśnieniem (BLEVE)",
-    "pożar wewnętrzny z backdraftem",
     "skażenie promieniotwórcze terenu"
   ],
   0,
-  "W PDF: UVCE = wybuch niezwiązanej chmury par w powietrzu."
+  "TR to toksyczne uwolnienie (istotne przy ocenie stref i ewakuacji)."
 );
 
 addQ(
-  "Strefa II w organizacji akcji (wg PDF) jest m.in. obszarem…",
+  "TRI oznacza uwolnienie…",
   [
-    "pracy służb poza strefą I i obszarem dekontaminacji oraz obszarem zabezpieczenia logistycznego",
-    "bezpośredniego skażenia (najwyższe zagrożenie)",
-    "w którym prowadzi się wyłącznie ewakuację ludności",
-    "w którym przebywają osoby postronne"
+    "krótkotrwałe",
+    "ciągłe",
+    "wyłącznie w wodzie",
+    "wyłącznie w glebie"
   ],
   0,
-  "W PDF: strefa II jest wolna od skażenia i obejmuje obszar pracy służb + logistyki."
+  "TRI = krótkotrwałe (instantly)."
 );
 
 addQ(
-  "Obszar dekontaminacji (D) wg PDF jest zlokalizowany…",
+  "TRC oznacza uwolnienie…",
   [
-    "poza strefą I, na granicy stref działań, aby ograniczyć skażenie wtórne",
-    "zawsze w środku strefy I",
-    "zawsze w strefie II, daleko od działań",
-    "wyłącznie w strefie III"
+    "ciągłe",
+    "krótkotrwałe",
+    "jednorazowe",
+    "wyłącznie w powietrzu"
   ],
   0,
-  "W PDF: D jest poza strefą I i służy do dekontaminacji wstępnej oraz ograniczania skażenia wtórnego."
+  "TRC = ciągłe (constantly)."
 );
 
-addQ(
-  "Kto może przebywać w strefie I wg PDF?",
-  [
-    "ratownicy wyposażeni w ŚOI adekwatne do zagrożenia",
-    "każdy ratownik bez względu na ŚOI",
-    "osoby postronne po krótkiej instrukcji",
-    "tylko dowódca akcji"
-  ],
-  0,
-  "W PDF: w strefie I mogą przebywać tylko ratownicy z odpowiednim sprzętem ochrony osobistej."
-);
+/* --- LD50 / LC50 / jednostki --- */
 
 addQ(
-  "Które pojęcie z PDF oznacza „rozpraszanie skażeń w ośrodku”?",
+  "LD50 (DL50) to…",
   [
-    "dyspersja",
-    "sorpcja",
-    "adwekcja",
-    "degradacja"
-  ],
-  0,
-  "W PDF: dyspersja = rozpraszanie skażeń w danym ośrodku."
-);
-
-addQ(
-  "Które pojęcie z PDF oznacza „poziomy transport skażeń ruchem powietrza”?",
-  [
-    "adwekcja",
-    "dyfuzja",
-    "dyspersja",
-    "degradacja"
-  ],
-  0,
-  "W PDF: adwekcja = poziome ruchy powietrza przenoszące skażenia."
-);
-
-addQ(
-  "Które pojęcie z PDF oznacza „wyrównywanie stężeń w wyniku bezładnego ruchu (prawo Ficka)”?",
-  [
-    "dyfuzja",
-    "adwekcja",
-    "sorpcja",
-    "degradacja"
-  ],
-  0,
-  "W PDF: dyfuzja = wyrównywanie stężeń (prawo Ficka)."
-);
-
-addQ(
-  "Które pojęcie z PDF oznacza „rozkład skażeń w procesach chemicznych i biologicznych”?",
-  [
-    "degradacja",
-    "dyspersja",
-    "sorpcja",
-    "adwekcja"
-  ],
-  0,
-  "W PDF: degradacja = rozkład w procesach chemicznych i biologicznych."
-);
-
-/* --- 76–84: granice wybuchowości, temperatury, definicje toksykologiczne --- */
-
-addQ(
-  "Które stwierdzenie o LEL/DGW jest poprawne?",
-  [
-    "poniżej LEL mieszanina jest zbyt „uboga” w paliwo, aby mogła wybuchnąć",
-    "poniżej LEL zawsze dochodzi do wybuchu",
-    "LEL oznacza temperaturę samozapalenia",
-    "LEL dotyczy wyłącznie cieczy"
-  ],
-  0,
-  "LEL/DGW to minimalne stężenie palne – poniżej niego mieszanina jest za uboga, by wybuchła."
-);
-
-addQ(
-  "Które stwierdzenie o UEL/GGW jest poprawne?",
-  [
-    "powyżej UEL mieszanina jest zbyt „bogata” w paliwo, aby mogła wybuchnąć",
-    "powyżej UEL wybuch jest zawsze pewny",
-    "UEL to dolna granica wybuchowości",
-    "UEL oznacza NDS"
-  ],
-  0,
-  "UEL/GGW to najwyższe stężenie, przy którym wybuch jest możliwy; powyżej mieszanina jest zbyt bogata."
-);
-
-addQ(
-  "Temperatura zapłonu (wg PDF) dotyczy sytuacji, w której…",
-  [
-    "powyżej tej temperatury pary cieczy mogą zapalić się od bodźca termicznego (iskra/płomień)",
-    "ciecz zapala się samorzutnie bez bodźca",
-    "zawsze dochodzi do detonacji",
-    "mieszanina jest zawsze poza granicami wybuchowości"
-  ],
-  0,
-  "W PDF: temperatura zapłonu = minimalna temp., gdy pary mogą zapalić się od bodźca."
-);
-
-addQ(
-  "Temperatura samozapalenia (wg PDF) to…",
-  [
-    "najniższa temperatura, przy której następuje zapłon bez bodźca zewnętrznego",
-    "najniższa temperatura, gdy pary zapalają się od iskry",
-    "temperatura wrzenia",
-    "temperatura topnienia"
-  ],
-  0,
-  "Samozapalenie zachodzi bez zewnętrznego bodźca — to minimalna temp. dla takiego procesu."
-);
-
-addQ(
-  "„Dawka” w toksykologii (wg PDF) to…",
-  [
-    "ilość substancji wchłoniętej do organizmu",
-    "czas przebywania w strefie zagrożenia",
-    "stężenie w powietrzu",
+    "dawka (mg/kg) powodująca śmierć 50% zwierząt doświadczalnych w określonym czasie",
+    "stężenie (mg/m³) powodujące śmierć 50% zwierząt",
+    "stężenie pułapowe w pracy",
     "granica wybuchowości"
   ],
   0,
-  "W PDF: dawka = ilość substancji wchłoniętej do organizmu."
+  "LD50 odnosi się do dawki w przeliczeniu na masę ciała (mg/kg)."
 );
 
 addQ(
-  "LD50 jest wyrażane w…",
+  "LC50 (CL50) to…",
+  [
+    "stężenie (mg/m³) powodujące śmierć 50% zwierząt doświadczalnych w określonym czasie",
+    "dawka (mg/kg) powodująca śmierć 50% zwierząt",
+    "temperatura zapłonu",
+    "temperatura samozapalenia"
+  ],
+  0,
+  "LC50 dotyczy stężenia w powietrzu/wodzie (mg/m³)."
+);
+
+addQ(
+  "Jednostką LD50 jest…",
   [
     "mg/kg",
     "mg/m³",
@@ -1200,11 +584,11 @@ addQ(
     "µSv/h"
   ],
   0,
-  "LD50 to dawka (masa substancji) w przeliczeniu na masę ciała (mg/kg)."
+  "LD50: mg/kg."
 );
 
 addQ(
-  "LC50 jest wyrażane w…",
+  "Jednostką LC50 jest…",
   [
     "mg/m³",
     "mg/kg",
@@ -1212,37 +596,63 @@ addQ(
     "R"
   ],
   0,
-  "LC50 to stężenie w powietrzu/wodzie (mg/m³) powodujące śmierć 50% zwierząt w 14 dni."
+  "LC50: mg/m³."
 );
 
+/* --- NDS / NDSCh / NDSP --- */
+
 addQ(
-  "Który zestaw najlepiej oddaje sens NDS/NDSCh/NDSP?",
+  "NDS (TWA) wg materiału to stężenie, które…",
   [
-    "NDS: średnie dla 8h; NDSCh: chwilowe 2×15 min; NDSP: nieprzekraczalne w żadnym momencie",
-    "NDS: nieprzekraczalne; NDSCh: 8h; NDSP: 2×15 min",
-    "wszystkie są identyczne",
-    "dotyczą tylko promieniowania"
+    "przy 8 godzinach pracy dziennie przez długi okres nie wywołuje objawów zatrucia",
+    "może być dowolnie przekraczane",
+    "jest nieprzekraczalne w każdym momencie",
+    "dotyczy tylko promieniowania"
   ],
   0,
-  "W PDF wyraźnie rozróżniono: NDS (8h), NDSCh (2×15 min), NDSP (pułapowe)."
+  "NDS to wartość uśredniona dla typowego dnia pracy."
 );
 
 addQ(
-  "NDSCh wg PDF może wystąpić maksymalnie…",
+  "NDSCh (STEL) wg materiału to stężenie średnie, które…",
   [
-    "2 razy po 15 minut na zmianę roboczą, z przerwą co najmniej 1 godziny",
-    "1 raz na zmianę bez przerwy",
-    "dowolną liczbę razy",
-    "tylko w nocy"
+    "może utrzymywać się krótkotrwale (2×15 min na zmianę) z przerwą co najmniej 1 h",
+    "nie może być przekroczone nigdy",
+    "jest średnią 8-godzinną",
+    "równa się NDSP"
   ],
   0,
-  "W PDF: NDSCh można przekroczyć chwilowo 2×15 min z odstępem minimum 1h."
+  "NDSCh dopuszcza krótkie ekspozycje w kontrolowanych warunkach."
 );
 
-/* --- 85–92: promieniowanie / dawka ekspozycyjna / jednostki + przykład 1/r^2 --- */
+addQ(
+  "NDSP to stężenie…",
+  [
+    "którego nie wolno przekroczyć w żadnym momencie",
+    "uśrednione dla 8 h pracy",
+    "dopuszczalne 2×15 min na zmianę",
+    "odnoszące się do LD50"
+  ],
+  0,
+  "NDSP = pułapowe, bezwzględnie nieprzekraczalne."
+);
+
+/* --- Promieniowanie: dawka ekspozycyjna --- */
 
 addQ(
-  "Dawka ekspozycyjna X wg PDF obliczana jest jako…",
+  "Dawka ekspozycyjna (X) jest miarą…",
+  [
+    "jonizacji zachodzącej w powietrzu pod wpływem promieniowania X lub γ",
+    "toksyczności substancji w wodzie",
+    "zapalności par cieczy",
+    "dyfuzji skażeń"
+  ],
+  0,
+  "Dotyczy jonizacji powietrza (promieniowanie X/γ)."
+);
+
+addQ(
+  "Wzór na dawkę ekspozycyjną to…",
   [
     "X = Q / m",
     "X = m / Q",
@@ -1250,7 +660,7 @@ addQ(
     "X = Q² / m"
   ],
   0,
-  "W PDF: X = Q/m — ładunek jonów jednego znaku / masa powietrza."
+  "W materiale: X = Q/m."
 );
 
 addQ(
@@ -1262,11 +672,11 @@ addQ(
     "mg/m³"
   ],
   0,
-  "W PDF: w SI dawkę ekspozycyjną wyraża się w C/kg."
+  "W SI: C/kg."
 );
 
 addQ(
-  "Relacja jednostek podana w PDF: 1 R = …",
+  "Zależność jednostek: 1 R = …",
   [
     "2,58·10⁻⁴ C/kg",
     "2,58·10⁻² C/kg",
@@ -1274,59 +684,25 @@ addQ(
     "2,58·10⁻⁸ C/kg"
   ],
   0,
-  "W PDF: 1 R = 2,58·10⁻⁴ C/kg."
+  "W materiale: 1 R = 2,58·10⁻⁴ C/kg."
 );
 
-addQ(
-  "Jeśli moc dawki w 1 m wynosi 400 µSv/h, to w 10 m wynosi (prawo 1/r²)…",
-  [
-    "4 µSv/h",
-    "40 µSv/h",
-    "400 µSv/h",
-    "0,4 µSv/h"
-  ],
-  0,
-  "400*(1²/10²)=400/100=4 µSv/h."
-);
+/* --- Prawo 1/r² (zadaniowe) --- */
 
 addQ(
-  "Jeśli moc dawki w 1 m wynosi 400 µSv/h, to w 20 m wynosi (prawo 1/r²)…",
+  "Jeśli moc dawki w odległości 1 m wynosi 400 µSv/h, to w odległości 20 m wynosi…",
   [
     "1 µSv/h",
-    "2 µSv/h",
     "20 µSv/h",
-    "0,5 µSv/h"
+    "400 µSv/h",
+    "8000 µSv/h"
   ],
   0,
-  "400*(1²/20²)=400/400=1 µSv/h."
+  "Prawo 1/r²: 400*(1²/20²)=400/400=1 µSv/h."
 );
 
 addQ(
-  "Wg PDF: strefa kontrolowana w ochronie radiologicznej to…",
-  [
-    "teren o kontrolowanym dostępie z dodatkowymi przepisami ochrony przed promieniowaniem i skażeniem",
-    "teren w pełni bezpieczny bez wymagań",
-    "obszar dekontaminacji wstępnej",
-    "obszar ewakuacji ludności"
-  ],
-  0,
-  "W PDF: strefa kontrolowana ma kontrolowany dostęp i szczególne zasady ochrony."
-);
-
-addQ(
-  "Wg PDF: strefa nadzorowana to…",
-  [
-    "teren podlegający nadzorowi w zakresie ochrony radiologicznej (mniej restrykcyjny niż kontrolowana)",
-    "teren bez żadnych zasad",
-    "obszar bezpośredniego skażenia",
-    "wyłącznie strefa dla medyków"
-  ],
-  0,
-  "W PDF opisuje się strefy (kontrolowana i nadzorowana) w kontekście radiologicznym."
-);
-
-addQ(
-  "Prawo odwrotności kwadratu odległości (1/r²) oznacza, że…",
+  "Prawo odwrotności kwadratu odległości oznacza, że…",
   [
     "podwojenie odległości zmniejsza moc dawki 4 razy",
     "podwojenie odległości zmniejsza moc dawki 2 razy",
@@ -1334,121 +710,319 @@ addQ(
     "odległość nie wpływa na moc dawki"
   ],
   0,
-  "Wprost: moc dawki maleje proporcjonalnie do kwadratu odległości."
+  "To klasyczna zależność 1/r²."
 );
 
-/* --- 93–100: przekrojowe pytania „łączące” cały materiał --- */
+/* ====== WKLEJ CZĘŚĆ 3/3 PONIŻEJ (pytania 68–100 + START + event listenery + zamknięcie HTML) ====== */
+  /* ====== CZĘŚĆ 3/3 — pytania 68–100 + START + event listenery + zamknięcie HTML ====== */
+
+/* --- 68–76: granice wybuchowości / temperatury / definicje --- */
 
 addQ(
-  "Który zestaw pojęć z PDF dotyczy toksyczności i norm higienicznych pracy?",
+  "Które stwierdzenie o LEL/DGW jest poprawne?",
   [
-    "NDS / NDSCh / NDSP",
-    "LEL / UEL",
-    "dyfuzja / adwekcja",
-    "BLEVE / UVCE"
+    "poniżej LEL mieszanina jest zbyt uboga w paliwo, aby mogła wybuchnąć",
+    "poniżej LEL wybuch jest zawsze pewny",
+    "LEL oznacza temperaturę samozapalenia",
+    "LEL dotyczy tylko substancji stałych"
   ],
   0,
-  "NDS/NDSCh/NDSP to normy stężeń w środowisku pracy."
+  "LEL/DGW to minimalne stężenie palne — poniżej niego mieszanina jest za uboga na zapłon/wybuch."
 );
 
 addQ(
-  "Który zestaw pojęć z PDF dotyczy palności i wybuchowości mieszanin?",
+  "Które stwierdzenie o UEL/GGW jest poprawne?",
   [
-    "LEL(DGW) / UEL(GGW) / temperatura zapłonu / temperatura samozapalenia",
-    "LD50 / LC50",
-    "NDS / NDSP",
-    "adwekcja / dyfuzja"
+    "powyżej UEL mieszanina jest zbyt bogata w paliwo, aby mogła wybuchnąć",
+    "powyżej UEL wybuch jest zawsze pewny",
+    "UEL to dolna granica wybuchowości",
+    "UEL to wartość NDS"
   ],
   0,
-  "Te pojęcia opisują warunki zapłonu/wybuchu mieszanin palnych."
+  "UEL/GGW to maksymalne stężenie palne — powyżej niego mieszanina jest za bogata (za mało tlenu)."
 );
 
 addQ(
-  "Który zestaw pojęć z PDF dotyczy „ruchu i losu” skażeń w środowisku?",
+  "Temperatura zapłonu (wg materiału) to sytuacja, gdy…",
   [
-    "dyfuzja / adwekcja / dyspersja / sorpcja / degradacja",
-    "BLEVE / UVCE",
-    "LD50 / LC50",
-    "NDS / NDSCh"
+    "powyżej tej temperatury pary cieczy mogą zapalić się od bodźca (iskra/płomień)",
+    "ciecz zapala się zawsze bez bodźca",
+    "zawsze dochodzi do detonacji",
+    "granice wybuchowości przestają obowiązywać"
   ],
   0,
-  "To pięć kluczowych procesów opisanych w materiale."
+  "To minimalna temperatura, przy której pary mogą zapalić się od zewnętrznego bodźca."
 );
 
 addQ(
-  "Które stwierdzenie najlepiej opisuje różnicę LD50 vs LC50?",
+  "Temperatura samozapalenia to…",
+  [
+    "najniższa temperatura, przy której następuje zapłon bez bodźca zewnętrznego",
+    "najniższa temperatura, gdy pary zapalają się od iskry",
+    "temperatura wrzenia",
+    "temperatura topnienia"
+  ],
+  0,
+  "Samozapalenie zachodzi bez iskry/płomienia — to minimalna temp. dla tego zjawiska."
+);
+
+addQ(
+  "„Dawka” w toksykologii to…",
+  [
+    "ilość substancji wchłoniętej do organizmu",
+    "czas przebywania w strefie zagrożenia",
+    "stężenie w powietrzu",
+    "granica wybuchowości"
+  ],
+  0,
+  "Dawka odnosi się do ilości, która realnie trafiła do organizmu."
+);
+
+/* --- 77–84: UVCE / BLEVE / TR --- */
+
+addQ(
+  "UVCE oznacza…",
+  [
+    "wybuch niezwiązanej chmury par w powietrzu",
+    "wybuch zbiornika z cieczą pod ciśnieniem (BLEVE)",
+    "toksyczne uwolnienie ciągłe",
+    "proces dyfuzji"
+  ],
+  0,
+  "UVCE to wybuch chmury par (cieczy palnej) w powietrzu."
+);
+
+addQ(
+  "BLEVE oznacza…",
+  [
+    "wybuchowe uwolnienie ekspandującej pary i wrzącej cieczy",
+    "wybuch niezwiązanej chmury par (UVCE)",
+    "stężenie pułapowe NDSP",
+    "proces sorpcji"
+  ],
+  0,
+  "BLEVE dotyczy typowo zbiornika pod ciśnieniem z cieczą, która gwałtownie wrze."
+);
+
+addQ(
+  "TR (toxic release) oznacza…",
+  [
+    "toksyczne uwolnienie substancji",
+    "wybuch zbiornika",
+    "pożar strumieniowy",
+    "promieniowanie jonizujące"
+  ],
+  0,
+  "TR to toksyczne uwolnienie, kluczowe dla stref i ewakuacji."
+);
+
+addQ(
+  "TRI oznacza uwolnienie…",
+  [
+    "krótkotrwałe",
+    "ciągłe",
+    "tylko w wodzie",
+    "tylko w glebie"
+  ],
+  0,
+  "TRI: krótko i intensywnie (instantly)."
+);
+
+addQ(
+  "TRC oznacza uwolnienie…",
+  [
+    "ciągłe",
+    "krótkotrwałe",
+    "jednorazowe",
+    "tylko w powietrzu"
+  ],
+  0,
+  "TRC: ciągłe (constantly)."
+);
+
+/* --- 85–92: NDS / NDSCh / NDSP + LD50/LC50 --- */
+
+addQ(
+  "Które stwierdzenie najlepiej opisuje NDS/NDSCh/NDSP?",
+  [
+    "NDS: 8h; NDSCh: 2×15 min; NDSP: nieprzekraczalne",
+    "NDS: nieprzekraczalne; NDSP: 8h; NDSCh: dowolnie",
+    "wszystkie są takie same",
+    "dotyczą tylko promieniowania"
+  ],
+  0,
+  "To trzy różne poziomy: średnie (NDS), krótkotrwałe (NDSCh) i pułapowe (NDSP)."
+);
+
+addQ(
+  "NDSCh wg materiału może wystąpić maksymalnie…",
+  [
+    "2 razy po 15 min na zmianę, z przerwą ≥ 1 godziny",
+    "1 raz na zmianę bez przerwy",
+    "dowolną liczbę razy",
+    "tylko w nocy"
+  ],
+  0,
+  "To reguła 2×15 min na zmianę i przerwa minimum 1 godzina."
+);
+
+addQ(
+  "LD50 vs LC50 — poprawne jest:",
   [
     "LD50 to dawka (mg/kg), LC50 to stężenie (mg/m³)",
-    "LD50 to stężenie (mg/m³), LC50 to dawka (mg/kg)",
-    "oba oznaczają to samo",
-    "oba odnoszą się do promieniowania"
+    "LD50 to stężenie, LC50 to dawka",
+    "oznaczają to samo",
+    "dotyczą promieniowania"
   ],
   0,
-  "W PDF: LD50 = mg/kg, LC50 = mg/m³."
+  "LD50 = dawka, LC50 = stężenie."
 );
 
 addQ(
-  "Które zdarzenie z PDF jest typowo „chmurowo-wybuchowe” w powietrzu?",
+  "Jednostka LD50 to…",
   [
-    "UVCE",
-    "BLEVE",
-    "TRC",
+    "mg/kg",
+    "mg/m³",
+    "C/kg",
+    "µSv/h"
+  ],
+  0,
+  "LD50 podaje się w mg/kg."
+);
+
+addQ(
+  "Jednostka LC50 to…",
+  [
+    "mg/m³",
+    "mg/kg",
+    "C/kg",
+    "R"
+  ],
+  0,
+  "LC50 podaje się w mg/m³."
+);
+
+/* --- 93–100: procesy środowiskowe + podsumowania --- */
+
+addQ(
+  "„Rozpraszanie skażeń w ośrodku” to…",
+  [
+    "dyspersja",
+    "sorpcja",
+    "dyfuzja",
+    "adwekcja"
+  ],
+  0,
+  "Dyspersja = rozpraszanie w ośrodku."
+);
+
+addQ(
+  "„Wyrównywanie stężeń” to…",
+  [
+    "dyfuzja",
+    "adwekcja",
+    "degradacja",
     "sorpcja"
   ],
   0,
-  "UVCE dotyczy wybuchu niezwiązanej chmury par w powietrzu."
+  "Dyfuzja = wyrównywanie stężeń (prawo Ficka)."
 );
 
 addQ(
-  "Które zdarzenie z PDF dotyczy zbiornika z cieczą pod ciśnieniem (gwałtowny rozpad + para)?",
+  "„Transport skażeń z wiatrem (poziomy)” to…",
   [
-    "BLEVE",
-    "UVCE",
-    "LEL",
-    "NDSCh"
+    "adwekcja",
+    "dyfuzja",
+    "dyspersja",
+    "degradacja"
   ],
   0,
-  "BLEVE to rozpad zbiornika i wybuchowe uwolnienie pary oraz wrzącej cieczy."
+  "Adwekcja = transport ruchem powietrza."
 );
 
 addQ(
-  "W praktyce działań: pojęcia dyfuzja/adwekcja najbliżej odpowiadają…",
+  "„Wiązanie/pochłanianie skażeń” to…",
   [
-    "„mieszanie się” (dyfuzja) vs „transport z wiatrem” (adwekcja)",
-    "„transport z wiatrem” (dyfuzja) vs „mieszanie się” (adwekcja)",
-    "„wiązanie” (dyfuzja) vs „rozkład” (adwekcja)",
-    "„pożar” (dyfuzja) vs „wybuch” (adwekcja)"
+    "sorpcja",
+    "dyspersja",
+    "adwekcja",
+    "dyfuzja"
   ],
   0,
-  "Dyfuzja = mieszanie i wyrównywanie stężeń, adwekcja = transport ruchem powietrza."
+  "Sorpcja = wiązanie/pochłanianie."
 );
 
 addQ(
-  "Najlepsza para „stężenie minimalne palne” i „stężenie maksymalne palne” to…",
+  "„Rozkład skażeń chemiczny/biologiczny” to…",
   [
-    "LEL (DGW) i UEL (GGW)",
-    "NDS i NDSP",
-    "LD50 i LC50",
-    "TRI i TRC"
+    "degradacja",
+    "dyspersja",
+    "adwekcja",
+    "sorpcja"
   ],
   0,
-  "LEL/DGW to minimum palne, UEL/GGW to maksimum palne."
+  "Degradacja = rozkład chemiczny i biologiczny."
 );
+
+addQ(
+  "Zestaw pojęć dotyczących palności/wybuchowości to…",
+  [
+    "LEL/DGW, UEL/GGW, temperatura zapłonu, temperatura samozapalenia",
+    "LD50, LC50, NDS, NDSP",
+    "dyfuzja, adwekcja, sorpcja",
+    "TRI, TRC, C/kg"
+  ],
+  0,
+  "Ten zestaw opisuje warunki zapłonu/wybuchu mieszanin."
+);
+
+addQ(
+  "Zestaw pojęć dotyczących norm higienicznych pracy to…",
+  [
+    "NDS, NDSCh, NDSP",
+    "LEL, UEL",
+    "LD50, LC50",
+    "UVCE, BLEVE"
+  ],
+  0,
+  "NDS, NDSCh, NDSP to normy stężeń w środowisku pracy."
+);
+
+addQ(
+  "Jeśli moc dawki w 1 m wynosi 400 µSv/h, to w 10 m wynosi…",
+  [
+    "4 µSv/h",
+    "40 µSv/h",
+    "400 µSv/h",
+    "0,4 µSv/h"
+  ],
+  0,
+  "Prawo 1/r²: 400*(1²/10²)=400/100=4 µSv/h."
+);
+
+addQ(
+  "Prawo 1/r² oznacza, że podwojenie odległości powoduje spadek mocy dawki…",
+  [
+    "4 razy",
+    "2 razy",
+    "8 razy",
+    "bez zmian"
+  ],
+  0,
+  "Podwojenie odległości → 4× mniejsza moc dawki (1/r²)."
+);
+
+/* ========= URUCHOM FIX 1 (tasuj odpowiedzi w KAŻDYM pytaniu) ========= */
+QUESTIONS.forEach(shuffleAnswersKeepCorrect);
 
 /* ========= START/FINISH + OBSŁUGA UI ========= */
-
 function start(){
   startScreen.classList.add('hidden');
   endScreen.classList.add('hidden');
   quizScreen.classList.remove('hidden');
 
   order = [...Array(QUESTIONS.length).keys()];
-  // kolejność zostaje, jeśli user wcześniej kliknął „Losuj kolejność”
-  // ale gdyby nie kliknął – też jest OK
-  idx = 0;
-  score = 0;
-  answered = 0;
-  locked = false;
+  idx = 0; score = 0; answered = 0; locked = false;
   userAns = new Array(QUESTIONS.length).fill(null);
 
   totalCount.textContent = QUESTIONS.length;
@@ -1464,12 +1038,11 @@ function finish(){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+/* przyciski */
 startBtn.addEventListener('click', start);
 
 shuffleBtn.addEventListener('click', ()=>{
-  if(order.length===0){
-    order = [...Array(QUESTIONS.length).keys()];
-  }
+  order = [...Array(QUESTIONS.length).keys()];
   shuffle(order);
   alert("Wylosowano kolejność pytań. Kliknij START.");
 });
@@ -1487,7 +1060,6 @@ restartBtn.addEventListener('click', ()=>{
 });
 
 reviewBtn.addEventListener('click', ()=>{
-  // przegląd: wraca do quizu i pozwala przechodzić pytania
   quizScreen.classList.remove('hidden');
   endScreen.classList.add('hidden');
   idx = 0;
@@ -1495,9 +1067,9 @@ reviewBtn.addEventListener('click', ()=>{
 });
 
 /* init */
-totalCount.textContent = "100";
+totalCount.textContent = QUESTIONS.length;
 order = [...Array(QUESTIONS.length).keys()];
 
 </script>
 </body>
-</html> 
+</html>
